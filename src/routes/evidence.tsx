@@ -24,7 +24,7 @@ type Result = { ok: boolean; hash: string; at: string } | null;
 function Evidence() {
   const fw = useFW();
   const list = useMemo(() => [...ALERTS].sort((a, b) => b.probability - a.probability), []);
-  const a = list.find((x) => x.id === fw.selectedId) ?? list[0];
+  const a = list.find((x) => x.id === fw.selectedId) ?? list[0]!;
   const [recorded, setRecorded] = useState<Record<string, { hash: string; at: string }>>({});
   const [tamper, setTamper] = useState(false);
   const [result, setResult] = useState<Result>(null);
