@@ -14,7 +14,7 @@ interface Props {
   onSelect: (id: string) => void;
   region: Region;
   className?: string;
-  caption?: string;
+  caption?: string | undefined;
 }
 
 export function FireMap({ alerts, selectedId, onSelect, region, className, caption }: Props) {

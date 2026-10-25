@@ -24,7 +24,7 @@ function KV({ k, v, mono = true }: { k: string; v: React.ReactNode; mono?: boole
   );
 }
 
-export function HotspotDetail({ alert: a, className }: { alert?: ScoredAlert; className?: string }) {
+export function HotspotDetail({ alert: a, className }: { alert?: ScoredAlert | undefined; className?: string }) {
   const hash = useEvidenceHash(a);
   if (!a) return <section className={cn("panel grid place-items-center p-8 text-center text-xs text-muted-foreground", className)}>Select a hotspot on the map or in the queue to inspect its assessment.</section>;
   const maxC = Math.max(...a.topFactors.map((f) => f.contribution));
