@@ -75,7 +75,7 @@ export function replayFrame(day: number): ScoredAlert[] {
     const hd = h[day] ?? 0;
     const ratio = hd / a.detections;
     const firstDay = h.findIndex((v) => v > 0);
-    return [scoreAlert(a, { frp: +(a.frp * ratio).toFixed(1), detections: hd, persistenceHours: Math.min(48, (day - firstDay) * 24) })];
+    return [scoreAlert(a, { frp: +(a.frp * ratio).toFixed(1), detections: hd, persistenceHours: Math.min(a.persistenceHours, (day - firstDay) * 24) })];
   });
 }
 
