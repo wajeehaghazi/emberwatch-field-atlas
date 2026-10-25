@@ -24,7 +24,7 @@ type Result = { ok: boolean; hash: string; at: string } | null;
 function Evidence() {
   const fw = useFW();
   const list = useMemo(() => [...ALERTS].sort((a, b) => b.probability - a.probability), []);
-  const a = list.find((x) => x.id === fw.selectedId) ?? list[0];
+  const a = list.find((x) => x.id === fw.selectedId) ?? list[0]!;
   const [recorded, setRecorded] = useState<Record<string, { hash: string; at: string }>>({});
   const [tamper, setTamper] = useState(false);
   const [result, setResult] = useState<Result>(null);
@@ -98,7 +98,7 @@ function Evidence() {
         <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_320px]">
           <section className="panel min-w-0">
             <PanelHeader title="Deterministic payload" meta={tamper ? "Modified — FRP altered" : "As recorded"} />
-            <pre className="scroll-thin max-h-[420px] overflow-auto p-4 font-mono text-[11px] leading-relaxed text-muted-foreground">{JSON.stringify(payload, Object.keys(payload).sort(), 2).replace(/"frp_mw": [\d.]+/, (m) => m)}</pre>
+            <pre className="scroll-thin max-h-[420px] overflow-auto p-4 font-mono text-[11px] leading-relaxed text-muted-foreground">{JSON.stringify(JSON.parse(canonical), null, 2)}</pre>
           </section>
           <section className="panel">
             <PanelHeader title="Integrity chain" />

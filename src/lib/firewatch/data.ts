@@ -71,15 +71,16 @@ export const ALERTS: ScoredAlert[] = RAW_ALERTS.map((a) => scoreAlert(a));
 export function replayFrame(day: number): ScoredAlert[] {
   return RAW_ALERTS.flatMap((a) => {
     const h = historyFor(a);
-    if (h[day] === 0) return [];
-    const ratio = h[day] / a.detections;
+    if (!h[day]) return [];
+    const hd = h[day] ?? 0;
+    const ratio = hd / a.detections;
     const firstDay = h.findIndex((v) => v > 0);
-    return [scoreAlert(a, { frp: +(a.frp * ratio).toFixed(1), detections: h[day], persistenceHours: Math.min(48, (day - firstDay) * 24) })];
+    return [scoreAlert(a, { frp: +(a.frp * ratio).toFixed(1), detections: hd, persistenceHours: Math.min(a.persistenceHours, (day - firstDay) * 24) })];
   });
 }
 
 export function explain(a: ScoredAlert): string {
-  const [f1, f2, f3] = a.topFactors;
+  const [f1, f2, f3] = a.topFactors as [typeof a.topFactors[number], typeof a.topFactors[number], typeof a.topFactors[number]];
   const dir = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(a.weather.windDir / 45) % 8];
   return `${a.name} shows ${a.detections} VIIRS detections at ${a.frp.toFixed(1)} MW FRP, active for ${a.persistenceHours} h. ` +
     `The score is driven mainly by ${f1.label.toLowerCase()} (${f1.value}), ${f2.label.toLowerCase()} (${f2.value}) and ${f3.label.toLowerCase()} (${f3.value}). ` +

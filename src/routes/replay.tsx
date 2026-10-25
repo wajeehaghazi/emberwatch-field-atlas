@@ -25,7 +25,7 @@ function Replay() {
   const [day, setDay] = useState(REPLAY_DAYS.length - 1);
   const [playing, setPlaying] = useState(false);
   const frames = useMemo(() => REPLAY_DAYS.map((_, i) => replayFrame(i).filter((a) => fw.region === "all" || a.state === fw.region)), [fw.region]);
-  const frame = frames[day];
+  const frame = frames[day] ?? [];
   const ranked = [...frame].sort((a, b) => b.probability - a.probability);
   const prevRank = new Map([...(frames[day - 1] ?? [])].sort((a, b) => b.probability - a.probability).map((a, i) => [a.id, i]));
 
