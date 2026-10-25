@@ -43,7 +43,7 @@ export function SeverityDistribution({ alerts }: { alerts: ScoredAlert[] }) {
 }
 
 export function ActivityChart({ alerts, selected, height = 150 }: { alerts: ScoredAlert[]; selected?: ScoredAlert; height?: number }) {
-  const data = REPLAY_DAYS.map((d, i) => ({ d, total: alerts.reduce((s, a) => s + a.history[i], 0), sel: selected ? selected.history[i] : 0 }));
+  const data = REPLAY_DAYS.map((d, i) => ({ d, total: alerts.reduce((s, a) => s + (a.history[i] ?? 0), 0), sel: selected ? selected.history[i] ?? 0 : 0 }));
   return (
     <ResponsiveContainer width="100%" height={height}>
       <AreaChart data={data} margin={{ top: 6, right: 4, left: -24, bottom: 0 }}>

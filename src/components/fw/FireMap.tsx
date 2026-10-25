@@ -19,7 +19,7 @@ interface Props {
 
 export function FireMap({ alerts, selectedId, onSelect, region, className, caption }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const initial = () => { const v = REGION_VIEW[region]; const [x, y] = proj(v.lon, v.lat); return { z: v.z, tx: W / 2 - x * v.z, ty: H / 2 - y * v.z }; };
+  const initial = (): { z: number; tx: number; ty: number } => { const v = REGION_VIEW[region]; const [x, y] = proj(v.lon, v.lat); return { z: v.z, tx: W / 2 - x * v.z, ty: H / 2 - y * v.z }; };
   const [view, setView] = useState(initial);
   const viewRef = useRef(view);
   viewRef.current = view;
@@ -163,7 +163,7 @@ export function FireMap({ alerts, selectedId, onSelect, region, className, capti
           ))}
 
           {groups.map((g) => {
-            const top = g.items[0];
+            const top = g.items[0]!;
             const isSel = g.items.some((a) => a.id === selectedId);
             if (g.items.length > 1) return (
               <g key={top.id} transform={`translate(${g.x} ${g.y}) scale(${inv})`} className="cursor-pointer"
